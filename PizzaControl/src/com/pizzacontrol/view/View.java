@@ -51,8 +51,7 @@ public class View implements Observer {
 		 * Integer(10), new Boolean(false)} };
 		 */
 
-		frmPizzaService
-				.setIconImage(Toolkit.getDefaultToolkit().getImage(View.class.getResource("/images/Pizza-icon.png"))); //$NON-NLS-1$
+		frmPizzaService.setIconImage(Toolkit.getDefaultToolkit().getImage(View.class.getResource("/images/Pizza-icon.png"))); //$NON-NLS-1$
 		frmPizzaService.setTitle(Messages.getString("View.ps")); //$NON-NLS-1$
 		frmPizzaService.setBounds(100, 100, 800, 600);
 		// frmPizzaService.setExtendedState(frmPizzaService.getExtendedState() |
