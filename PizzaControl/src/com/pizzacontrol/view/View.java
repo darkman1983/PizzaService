@@ -52,8 +52,8 @@ public class View implements Observer {
 		 */
 
 		frmPizzaService
-				.setIconImage(Toolkit.getDefaultToolkit().getImage(View.class.getResource("/images/Pizza-icon.png")));
-		frmPizzaService.setTitle("Pizza Service");
+				.setIconImage(Toolkit.getDefaultToolkit().getImage(View.class.getResource("/images/Pizza-icon.png"))); //$NON-NLS-1$
+		frmPizzaService.setTitle(Messages.getString("View.ps")); //$NON-NLS-1$
 		frmPizzaService.setBounds(100, 100, 800, 600);
 		// frmPizzaService.setExtendedState(frmPizzaService.getExtendedState() |
 		// JFrame.MAXIMIZED_BOTH);
@@ -61,47 +61,47 @@ public class View implements Observer {
 		JMenuBar menuBar = new JMenuBar();
 		frmPizzaService.setJMenuBar(menuBar);
 
-		JMenu mainMenu = new JMenu("Datei");
+		JMenu mainMenu = new JMenu(Messages.getString("View.file")); //$NON-NLS-1$
 		menuBar.add(mainMenu);
 
-		menuItems.add(new JMenuItem("Neu"));
+		menuItems.add(new JMenuItem(Messages.getString("View.new"))); //$NON-NLS-1$
 		// System.out.println("MenuItems: " + menuItems);
 		mainMenu.add(menuItems.get(menuItems.size() - 1));
 
-		menuItems.add(new JMenuItem("\u00D6ffnen"));
+		menuItems.add(new JMenuItem(Messages.getString("View.open"))); //$NON-NLS-1$
 		mainMenu.add(menuItems.get(menuItems.size() - 1));
 
 		JSeparator separator = new JSeparator();
 		mainMenu.add(separator);
 
-		menuItems.add(new JMenuItem("Speichern"));
+		menuItems.add(new JMenuItem(Messages.getString("View.save"))); //$NON-NLS-1$
 		mainMenu.add(menuItems.get(menuItems.size() - 1));
 
-		menuItems.add(new JMenuItem("Schlie\u00DFen"));
+		menuItems.add(new JMenuItem(Messages.getString("View.close"))); //$NON-NLS-1$
 		mainMenu.add(menuItems.get(menuItems.size() - 1));
 
 		JSeparator separator_1 = new JSeparator();
 		mainMenu.add(separator_1);
 
-		menuItems.add(new JMenuItem("Beenden"));
+		menuItems.add(new JMenuItem(Messages.getString("View.quit"))); //$NON-NLS-1$
 		mainMenu.add(menuItems.get(menuItems.size() - 1));
 
-		JMenu mnKunden = new JMenu("Kunden");
+		JMenu mnKunden = new JMenu(Messages.getString("View.customers")); //$NON-NLS-1$
 		menuBar.add(mnKunden);
 
-		JMenu mnBestellungen = new JMenu("Bestellungen");
+		JMenu mnBestellungen = new JMenu(Messages.getString("View.orders")); //$NON-NLS-1$
 		menuBar.add(mnBestellungen);
 
-		JMenu mnRechnung = new JMenu("Rechnung");
+		JMenu mnRechnung = new JMenu(Messages.getString("View.bills")); //$NON-NLS-1$
 		menuBar.add(mnRechnung);
 
 		JDesktopPane desktopPane = new JDesktopPane();
 		desktopPane.setBackground(Color.LIGHT_GRAY);
 		frmPizzaService.getContentPane().add(desktopPane, BorderLayout.CENTER);
 
-		JInternalFrame orders = new JInternalFrame("Bestellungen");
+		JInternalFrame orders = new JInternalFrame(Messages.getString("View.orders")); //$NON-NLS-1$
 
-		orders.setFrameIcon(new ImageIcon(View.class.getResource("/images/order.png")));
+		orders.setFrameIcon(new ImageIcon(View.class.getResource("/images/order.png"))); //$NON-NLS-1$
 		orders.setResizable(true);
 		orders.setIconifiable(true);
 		orders.setMaximizable(true);
@@ -115,8 +115,8 @@ public class View implements Observer {
 		}
 		orders.setVisible(true);
 
-		JInternalFrame customers = new JInternalFrame("Kunden");
-		customers.setFrameIcon(new ImageIcon(View.class.getResource("/images/customers-icon.png")));
+		JInternalFrame customers = new JInternalFrame(Messages.getString("View.customers")); //$NON-NLS-1$
+		customers.setFrameIcon(new ImageIcon(View.class.getResource("/images/customers-icon.png"))); //$NON-NLS-1$
 		customers.setResizable(true);
 		customers.setIconifiable(true);
 		customers.setMaximizable(true);
@@ -130,8 +130,8 @@ public class View implements Observer {
 			e.printStackTrace();
 		}
 
-		JInternalFrame bills = new JInternalFrame("Rechnungen");
-		bills.setFrameIcon(new ImageIcon(View.class.getResource("/images/bill.png")));
+		JInternalFrame bills = new JInternalFrame(Messages.getString("View.bills")); //$NON-NLS-1$
+		bills.setFrameIcon(new ImageIcon(View.class.getResource("/images/bill.png"))); //$NON-NLS-1$
 		bills.setMaximizable(true);
 		bills.setIconifiable(true);
 		bills.setResizable(true);
@@ -158,7 +158,7 @@ public class View implements Observer {
 	}
 
 	public void addController(ActionListener controller) {
-		System.out.println("View      : adding controller");
+		System.out.println(Messages.getString("View.vac")); //$NON-NLS-1$
 		menuItems.forEach(item -> {
 			item.addActionListener(controller);
 		});
