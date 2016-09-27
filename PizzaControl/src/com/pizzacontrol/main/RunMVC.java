@@ -3,7 +3,7 @@ package com.pizzacontrol.main;
 //(C) Joseph Mack 2011, jmack (at) wm7d (dot) net, released under GPL v3 (or any later version)
 
 import com.pizzacontrol.controller.Controller;
-import com.pizzacontrol.model.Model;
+import com.pizzacontrol.model.BaseModel;
 import com.pizzacontrol.view.View;
 
 public class RunMVC {
@@ -15,21 +15,21 @@ public class RunMVC {
 
 	public RunMVC() {
 
-		//create Model and View
-		Model myModel 	= new Model();
+		//create BaseModel and View
+		BaseModel myModel 	= new BaseModel();
 		View myView 	= new View();
 
-		//tell Model about View.
+		//tell BaseModel about View.
 		myModel.addObserver(myView);
 		/*
 			init model after view is instantiated and can show the status of the model
 			(I later decided that only the controller should talk to the model
 			and moved initialisation to the controller (see below).)
 		*/
-		//uncomment to directly initialise Model
+		//uncomment to directly initialise BaseModel
 		//myModel.setValue(start_value);
 
-		//create Controller. tell it about Model and View, initialise model
+		//create Controller. tell it about BaseModel and View, initialise model
 		Controller myController = new Controller();
 		myController.addModel(myModel);
 		myController.addView(myView);
@@ -37,7 +37,7 @@ public class RunMVC {
 
 		//tell View about Controller
 		myView.addController(myController);
-		//and Model,
+		//and BaseModel,
 		//this was only needed when the view inits the model
 		//myView.addModel(myModel);
 

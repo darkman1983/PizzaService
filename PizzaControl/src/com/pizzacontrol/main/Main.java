@@ -33,7 +33,7 @@ public class Main {
 		UIManager.put("ProgressBar.selectionBackground", Color.BLACK);
 		UIManager.put("ProgressBar.selectionForeground", Color.BLACK);
 
-		new SplashScreenMain();
+		//new SplashScreenMain();
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {

@@ -1,4 +1,5 @@
 package com.pizzacontrol.dao;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -16,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class Database {
 
-	private static Database dbIsntance;
+	private static Database dbInstance;
 	private static Connection con;
 	@SuppressWarnings("unused")
 	private static Statement stmt;
@@ -26,10 +27,10 @@ public class Database {
 	}
 
 	public static Database getInstance() {
-		if (dbIsntance == null) {
-			dbIsntance = new Database();
+		if (dbInstance == null) {
+			dbInstance = new Database();
 		}
-		return dbIsntance;
+		return dbInstance;
 	}
 
 	public Connection getConnection() {
@@ -38,7 +39,7 @@ public class Database {
 			try {
 				String host = "jdbc:mysql://localhost:1527/pizzaservice";
 				String username = "pizzaservice";
-				String password = "0815Pizza";
+				String password = "HCB5aErfXTGJu8pW";
 				con = DriverManager.getConnection(host, username, password);
 			} catch (SQLException ex) {
 				Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);

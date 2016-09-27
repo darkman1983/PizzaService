@@ -4,12 +4,15 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 import java.awt.Toolkit;
@@ -19,11 +22,26 @@ import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import java.awt.Color;
+import java.awt.Dimension;
 
-public class View implements Observer {
+import javax.swing.JLabel;
 
-	private JFrame frmPizzaService;
+import com.pizzacontrol.dao.DAOFactory;
+import com.pizzacontrol.model.Customer;
+
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import java.awt.Font;
+
+public class View extends JFrame implements Observer {
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 4549469789387173806L;
 	private ArrayList<JMenuItem> menuItems;
+	private JTable table;
+	private String[] customerTableColumnNames = {"ID", "Name", "Vorname", "Benutzername", "Passwort", "email", "Straﬂe", "Hausnummer", "Postleitzahl", "Ort", "Telefon", "Mobil"};
 
 	/**
 	 * Create the application.
@@ -36,29 +54,16 @@ public class View implements Observer {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmPizzaService = new JFrame();
 		menuItems = new ArrayList<JMenuItem>();
 
-		/*
-		 * String[] columnNames = {"First Name", "Last Name", "Sport",
-		 * "# of Years", "Vegetarian"};
-		 *
-		 * Object[][] data = { {"Kathy", "Smith", "Snowboarding", new
-		 * Integer(5), new Boolean(false)}, {"John", "Doe", "Rowing", new
-		 * Integer(3), new Boolean(true)}, {"Sue", "Black", "Knitting", new
-		 * Integer(2), new Boolean(false)}, {"Jane", "White", "Speed reading",
-		 * new Integer(20), new Boolean(true)}, {"Joe", "Brown", "Pool", new
-		 * Integer(10), new Boolean(false)} };
-		 */
-
-		frmPizzaService.setIconImage(Toolkit.getDefaultToolkit().getImage(View.class.getResource("/images/Pizza-icon.png"))); //$NON-NLS-1$
-		frmPizzaService.setTitle(Messages.getString("View.ps")); //$NON-NLS-1$
-		frmPizzaService.setBounds(100, 100, 800, 600);
-		// frmPizzaService.setExtendedState(frmPizzaService.getExtendedState() |
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage(View.class.getResource("/images/Pizza-icon.png"))); //$NON-NLS-1$
+		this.setTitle(Messages.getString("View.ps")); //$NON-NLS-1$
+		this.setBounds(100, 100, 800, 600);
+		// this.setExtendedState(this.getExtendedState() |
 		// JFrame.MAXIMIZED_BOTH);
 
 		JMenuBar menuBar = new JMenuBar();
-		frmPizzaService.setJMenuBar(menuBar);
+		this.setJMenuBar(menuBar);
 
 		JMenu mainMenu = new JMenu(Messages.getString("View.file")); //$NON-NLS-1$
 		menuBar.add(mainMenu);
@@ -96,10 +101,9 @@ public class View implements Observer {
 
 		JDesktopPane desktopPane = new JDesktopPane();
 		desktopPane.setBackground(Color.LIGHT_GRAY);
-		frmPizzaService.getContentPane().add(desktopPane, BorderLayout.CENTER);
+		this.getContentPane().add(desktopPane, BorderLayout.CENTER);
 
-		JInternalFrame orders = new JInternalFrame(Messages.getString("View.orders")); //$NON-NLS-1$
-
+		JInternalFrame orders = new JInternalFrame(Messages.getString("View.orders"));
 		orders.setFrameIcon(new ImageIcon(View.class.getResource("/images/order.png"))); //$NON-NLS-1$
 		orders.setResizable(true);
 		orders.setIconifiable(true);
@@ -112,24 +116,36 @@ public class View implements Observer {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
+		try {
+			orders.setIcon(true);
+		} catch (PropertyVetoException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		orders.setVisible(true);
 
-		JInternalFrame customers = new JInternalFrame(Messages.getString("View.customers")); //$NON-NLS-1$
+		JInternalFrame customers = new JInternalFrame(Messages.getString("View.customers"));
 		customers.setFrameIcon(new ImageIcon(View.class.getResource("/images/customers-icon.png"))); //$NON-NLS-1$
 		customers.setResizable(true);
 		customers.setIconifiable(true);
 		customers.setMaximizable(true);
 		customers.setBounds(20, 116, 764, 208);
 		desktopPane.add(customers);
-		customers.setVisible(true);
 		try {
-			customers.setIcon(true);
-		} catch (PropertyVetoException e) {
+			customers.setMaximum(true);
+		} catch (PropertyVetoException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
+		customers.setVisible(true);
+		//System.out.println(DAOFactory.getDAOFactory(DAOFactory.MYSQL).getCustomerDAO().selectAllCustomers().toString());
+		table = new JTable(customerTableModel(DAOFactory.getDAOFactory(DAOFactory.MYSQL).getCustomerDAO().selectAllCustomers()));
+		table.setFont(new Font("Arial", Font.PLAIN, 10));
+		table.setFillsViewportHeight(true);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS); // this is obvius part
+		customers.getContentPane().add(new JScrollPane(table), BorderLayout.CENTER);
 
-		JInternalFrame bills = new JInternalFrame(Messages.getString("View.bills")); //$NON-NLS-1$
+		JInternalFrame bills = new JInternalFrame(Messages.getString("View.bills"));
 		bills.setFrameIcon(new ImageIcon(View.class.getResource("/images/bill.png"))); //$NON-NLS-1$
 		bills.setMaximizable(true);
 		bills.setIconifiable(true);
@@ -138,16 +154,32 @@ public class View implements Observer {
 		desktopPane.add(bills);
 		bills.setVisible(true);
 		try {
+			bills.setMaximum(true);
+		} catch (PropertyVetoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
 			bills.setIcon(true);
+
+			JLabel lblNewLabel = new JLabel(Messages.getString("View.lblNewLabel.text")); //$NON-NLS-1$
+			getContentPane().add(lblNewLabel, BorderLayout.SOUTH);
+
+			JLabel statusBar = new JLabel("Willkommen");
+			Dimension dim = new Dimension();
+			dim.setSize(statusBar.getBounds().x, 100);
+			statusBar.setMinimumSize(dim);
+			//statusBar.setBounds(statusBar.getBounds().x, statusBar.getBounds().y, statusBar.getBounds().width, 100);
+			getContentPane().add(statusBar, BorderLayout.SOUTH);
 		} catch (PropertyVetoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		frmPizzaService.addWindowListener(new CloseListener());
+		this.addWindowListener(new CloseListener());
 		// Make the windows appear in Center of Screen
-		frmPizzaService.setLocationRelativeTo(null);
-		frmPizzaService.setVisible(true);
+		this.setLocationRelativeTo(null);
+		this.setVisible(true);
 	}
 
 	@Override
@@ -163,13 +195,29 @@ public class View implements Observer {
 		});
 	} // addController()
 
+	private DefaultTableModel customerTableModel(ArrayList<Customer> customers)
+	{
+		DefaultTableModel model = new DefaultTableModel();
+
+		model.setColumnIdentifiers(this.customerTableColumnNames);
+
+		for(Customer customer : customers)
+		{
+			Object[] rowData = {customer.getId(), customer.getName(), customer.getFirstname(), customer.getUsername(), customer.getPassword(), customer.getEmail(), customer.getStreet(), customer.getHousenumber(), customer.getZip(), customer.getCity(), customer.getPhone(), customer.getMobile()};
+
+			model.addRow(rowData);
+		}
+
+		return model;
+	}
+
 	// to initialise TextField
 	public void setValue(int v) {
 		// myTextField.setText("" + v);
 	} // setValue()
 
 	// uncomment to allow controller to use view to initialise model
-	// public void addModel(Model m){
+	// public void addModel(BaseModel m){
 	// System.out.println("View : adding model");
 	// this.model = m;
 	// } //addModel()

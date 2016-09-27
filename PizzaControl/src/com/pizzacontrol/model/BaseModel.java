@@ -1,22 +1,22 @@
 package com.pizzacontrol.model;
 import java.util.Observable;
 
-//Model.java
+//BaseModel.java
 //(C) Joseph Mack 2011, jmack (at) wm7d (dot) net, released under GPL v3 (or any later version)
 
 //inspired by Joseph Bergin's MVC gui at http://csis.pace.edu/~bergin/mvc/mvcgui.html
 
-//Model holds an int counter (that's all it is).
-//Model is an Observable
-//Model doesn't know about View or Controller
+//BaseModel holds an int counter (that's all it is).
+//BaseModel is an Observable
+//BaseModel doesn't know about View or Controller
 
-public class Model extends Observable {
+public class BaseModel extends Observable {
 
 	private int counter;	//primitive, automatically initialised to 0
 
-	public Model(){
+	public BaseModel(){
 
-		//System.out.println("Model()");
+		//System.out.println("BaseModel()");
 
 		/**
 		Problem initialising both model and view:
@@ -46,9 +46,9 @@ public class Model extends Observable {
 		to initialise the model from the controller and have the model automatically update the view.
 		*/
 
-	} //Model()
+	} //BaseModel()
 
-	//uncomment this if View is using Model Pull to get the counter
+	//uncomment this if View is using BaseModel Pull to get the counter
 	//not needed if getting counter from notifyObservers()
 	//public int getValue(){return counter;}
 
@@ -60,11 +60,11 @@ public class Model extends Observable {
 	public void setValue(int value) {
 
 		this.counter = value;
-		System.out.println("Model init: counter = " + counter);
+		System.out.println("BaseModel init: counter = " + counter);
 		setChanged();
 		//model Push - send counter as part of the message
 		notifyObservers(counter);
-		//if using Model Pull, then can use notifyObservers()
+		//if using BaseModel Pull, then can use notifyObservers()
 		//notifyObservers()
 
 	} //setValue()
@@ -72,13 +72,13 @@ public class Model extends Observable {
 	public void incrementValue() {
 
 		++counter;
-		System.out.println("Model     : counter = " + counter);
+		System.out.println("BaseModel     : counter = " + counter);
 		setChanged();
 		//model Push - send counter as part of the message
 		notifyObservers(counter);
-		//if using Model Pull, then can use notifyObservers()
+		//if using BaseModel Pull, then can use notifyObservers()
 		//notifyObservers()
 
 	} //incrementValue()
 
-} //Model
+} //BaseModel

@@ -3,7 +3,7 @@ package com.pizzacontrol.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import com.pizzacontrol.model.Model;
+import com.pizzacontrol.model.BaseModel;
 import com.pizzacontrol.view.View;
 
 //Controller.java
@@ -15,8 +15,8 @@ import com.pizzacontrol.view.View;
 
 public class Controller implements ActionListener {
 
-	// Joe: Controller has Model and View hardwired in
-	Model model;
+	// Joe: Controller has BaseModel and View hardwired in
+	BaseModel model;
 	View view;
 
 	public Controller() {
@@ -37,13 +37,12 @@ public class Controller implements ActionListener {
 			break;
 		}
 
-		System.out.println("Controller: acting on Model");
-		model.incrementValue();
+		System.out.println("Controller: acting on BaseModel");
 	} // actionPerformed()
 
 	// Joe I should be able to add any model/view with the correct API
-	// but here I can only add Model/View
-	public void addModel(Model m) {
+	// but here I can only add BaseModel/View
+	public void addModel(BaseModel m) {
 		System.out.println("Controller: adding model");
 		this.model = m;
 	} // addModel()
