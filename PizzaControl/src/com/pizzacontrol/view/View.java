@@ -28,8 +28,10 @@ import javax.swing.JLabel;
 
 import com.pizzacontrol.dao.DAOFactory;
 import com.pizzacontrol.model.Customer;
+import com.pizzacontrol.utils.ExtJTable;
 
 import javax.swing.JTable;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Font;
 
@@ -40,7 +42,7 @@ public class View extends JFrame implements Observer {
 	 */
 	private static final long serialVersionUID = 4549469789387173806L;
 	private ArrayList<JMenuItem> menuItems;
-	private JTable table;
+	private ExtJTable customerTable;
 	private String[] customerTableColumnNames = {"ID", "Name", "Vorname", "Benutzername", "Passwort", "email", "Straße", "Hausnummer", "Postleitzahl", "Ort", "Telefon", "Mobil"};
 
 	/**
@@ -139,11 +141,11 @@ public class View extends JFrame implements Observer {
 		}
 		customers.setVisible(true);
 		//System.out.println(DAOFactory.getDAOFactory(DAOFactory.MYSQL).getCustomerDAO().selectAllCustomers().toString());
-		table = new JTable(customerTableModel(DAOFactory.getDAOFactory(DAOFactory.MYSQL).getCustomerDAO().selectAllCustomers()));
-		table.setFont(new Font("Arial", Font.PLAIN, 10));
-		table.setFillsViewportHeight(true);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS); // this is obvius part
-		customers.getContentPane().add(new JScrollPane(table), BorderLayout.CENTER);
+		customerTable = new ExtJTable("customerTable", customerTableModel(DAOFactory.getDAOFactory(DAOFactory.MYSQL).getCustomerDAO().selectAllCustomers()));
+		customerTable.setFont(new Font("Arial", Font.PLAIN, 10));
+		customerTable.setFillsViewportHeight(true);
+		customerTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS); // this is obvius part
+		customers.getContentPane().add(new JScrollPane(customerTable), BorderLayout.CENTER);
 
 		JInternalFrame bills = new JInternalFrame(Messages.getString("View.bills"));
 		bills.setFrameIcon(new ImageIcon(View.class.getResource("/images/bill.png"))); //$NON-NLS-1$
@@ -188,12 +190,18 @@ public class View extends JFrame implements Observer {
 
 	}
 
-	public void addController(ActionListener controller) {
+	public void addAL(ActionListener controller) {
 		System.out.println(Messages.getString("View.vac")); //$NON-NLS-1$
+
 		menuItems.forEach(item -> {
 			item.addActionListener(controller);
 		});
 	} // addController()
+
+	public void addTML(TableModelListener controller)
+	{
+		customerTable.getModel().addTableModelListener(controller);
+	}
 
 	private DefaultTableModel customerTableModel(ArrayList<Customer> customers)
 	{

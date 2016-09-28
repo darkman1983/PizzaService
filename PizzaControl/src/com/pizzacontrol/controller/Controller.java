@@ -3,7 +3,14 @@ package com.pizzacontrol.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
+
 import com.pizzacontrol.model.BaseModel;
+import com.pizzacontrol.utils.ExtJTable;
 import com.pizzacontrol.view.View;
 
 //Controller.java
@@ -13,7 +20,7 @@ import com.pizzacontrol.view.View;
 
 //Controller is a Listener
 
-public class Controller implements ActionListener {
+public class Controller implements ActionListener, TableModelListener {
 
 	// Joe: Controller has BaseModel and View hardwired in
 	BaseModel model;
@@ -55,5 +62,20 @@ public class Controller implements ActionListener {
 	public void initModel(int x) {
 		model.setValue(x);
 	} // initModel()
+
+	@Override
+	public void tableChanged(TableModelEvent e) {
+		System.out.println("Controller: Some table action was performed... \nThe table was: " + e.toString());
+
+		AbstractTableModel model = (AbstractTableModel) e.getSource();
+	    TableModelListener[] listeners = model.getTableModelListeners();
+	    for (TableModelListener listener : listeners) {
+	        if (listener instanceof ExtJTable) {
+	        	System.out.println("The table ID is: " + ((ExtJTable)listener).getTableID());
+	        	System.out.println(((ExtJTable)listener).toString());
+	            System.out.println(((ExtJTable)listener).getName());
+	        }
+	    }
+	}
 
 } // Controller

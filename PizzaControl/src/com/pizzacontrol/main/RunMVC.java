@@ -36,7 +36,8 @@ public class RunMVC {
 		myController.initModel(start_value);
 
 		//tell View about Controller
-		myView.addController(myController);
+		myView.addAL(myController);
+		myView.addTML(myController);
 		//and BaseModel,
 		//this was only needed when the view inits the model
 		//myView.addModel(myModel);
