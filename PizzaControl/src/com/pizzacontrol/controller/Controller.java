@@ -42,6 +42,9 @@ public class Controller implements ActionListener, TableModelListener {
 		case "Beenden":
 			System.exit(0);
 			break;
+		case "Alle Kunden anzeigen":
+			view.showCustomers();
+			break;
 		}
 
 		System.out.println("Controller: acting on BaseModel");
@@ -65,15 +68,15 @@ public class Controller implements ActionListener, TableModelListener {
 
 	@Override
 	public void tableChanged(TableModelEvent e) {
-		System.out.println("Controller: Some table action was performed... \nThe table was: " + e.toString());
+		System.out.println("Controller: Some table action was performed...");
 
 		AbstractTableModel model = (AbstractTableModel) e.getSource();
 	    TableModelListener[] listeners = model.getTableModelListeners();
 	    for (TableModelListener listener : listeners) {
 	        if (listener instanceof ExtJTable) {
 	        	System.out.println("The table ID is: " + ((ExtJTable)listener).getTableID());
-	        	System.out.println(((ExtJTable)listener).toString());
-	            System.out.println(((ExtJTable)listener).getName());
+	        	/*System.out.println(((ExtJTable)listener).toString());
+	            System.out.println(((ExtJTable)listener).getName());*/
 	        }
 	    }
 	}

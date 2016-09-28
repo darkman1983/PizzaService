@@ -4,8 +4,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -25,15 +23,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JLabel;
-
-import com.pizzacontrol.dao.DAOFactory;
-import com.pizzacontrol.model.Customer;
 import com.pizzacontrol.utils.ExtJTable;
-
-import javax.swing.JTable;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableModel;
-import java.awt.Font;
 
 public class View extends JFrame implements Observer {
 
@@ -41,9 +32,8 @@ public class View extends JFrame implements Observer {
 	 *
 	 */
 	private static final long serialVersionUID = 4549469789387173806L;
-	private ArrayList<JMenuItem> menuItems;
-	private ExtJTable customerTable;
-	private String[] customerTableColumnNames = {"ID", "Name", "Vorname", "Benutzername", "Passwort", "email", "Straﬂe", "Hausnummer", "Postleitzahl", "Ort", "Telefon", "Mobil"};
+	private HashMap<String, ArrayList<JMenuItem>> menuItems;
+	private JDesktopPane desktopPane;
 
 	/**
 	 * Create the application.
@@ -56,7 +46,7 @@ public class View extends JFrame implements Observer {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		menuItems = new ArrayList<JMenuItem>();
+		menuItems = new HashMap<String, ArrayList<JMenuItem>>();
 
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage(View.class.getResource("/images/Pizza-icon.png"))); //$NON-NLS-1$
 		this.setTitle(Messages.getString("View.ps")); //$NON-NLS-1$
@@ -70,30 +60,38 @@ public class View extends JFrame implements Observer {
 		JMenu mainMenu = new JMenu(Messages.getString("View.file")); //$NON-NLS-1$
 		menuBar.add(mainMenu);
 
-		menuItems.add(new JMenuItem(Messages.getString("View.new"))); //$NON-NLS-1$
-		// System.out.println("MenuItems: " + menuItems);
-		mainMenu.add(menuItems.get(menuItems.size() - 1));
+		if(menuItems.get("File") == null) {
+			menuItems.put("File", new ArrayList<JMenuItem>());
+		}
 
-		menuItems.add(new JMenuItem(Messages.getString("View.open"))); //$NON-NLS-1$
-		mainMenu.add(menuItems.get(menuItems.size() - 1));
+		menuItems.get("File").add(new JMenuItem(Messages.getString("View.new"))); //$NON-NLS-1$
+		mainMenu.add(menuItems.get("File").get(menuItems.get("File").size() - 1));
+
+		menuItems.get("File").add(new JMenuItem(Messages.getString("View.open"))); //$NON-NLS-1$
+		mainMenu.add(menuItems.get("File").get(menuItems.get("File").size() - 1));
 
 		JSeparator separator = new JSeparator();
 		mainMenu.add(separator);
 
-		menuItems.add(new JMenuItem(Messages.getString("View.save"))); //$NON-NLS-1$
-		mainMenu.add(menuItems.get(menuItems.size() - 1));
+		menuItems.get("File").add(new JMenuItem(Messages.getString("View.save"))); //$NON-NLS-1$
+		mainMenu.add(menuItems.get("File").get(menuItems.get("File").size() - 1));
 
-		menuItems.add(new JMenuItem(Messages.getString("View.close"))); //$NON-NLS-1$
-		mainMenu.add(menuItems.get(menuItems.size() - 1));
+		menuItems.get("File").add(new JMenuItem(Messages.getString("View.close"))); //$NON-NLS-1$
+		mainMenu.add(menuItems.get("File").get(menuItems.get("File").size() - 1));
 
 		JSeparator separator_1 = new JSeparator();
 		mainMenu.add(separator_1);
 
-		menuItems.add(new JMenuItem(Messages.getString("View.quit"))); //$NON-NLS-1$
-		mainMenu.add(menuItems.get(menuItems.size() - 1));
+		menuItems.get("File").add(new JMenuItem(Messages.getString("View.quit"))); //$NON-NLS-1$
+		mainMenu.add(menuItems.get("File").get(menuItems.get("File").size() - 1));
 
 		JMenu mnKunden = new JMenu(Messages.getString("View.customers")); //$NON-NLS-1$
 		menuBar.add(mnKunden);
+
+		menuItems.put("Customers", new ArrayList<JMenuItem>());
+
+		menuItems.get("Customers").add(new JMenuItem("Alle Kunden anzeigen")); //$NON-NLS-1$
+		mnKunden.add(menuItems.get("Customers").get(menuItems.get("Customers").size() - 1));
 
 		JMenu mnBestellungen = new JMenu(Messages.getString("View.orders")); //$NON-NLS-1$
 		menuBar.add(mnBestellungen);
@@ -101,7 +99,7 @@ public class View extends JFrame implements Observer {
 		JMenu mnRechnung = new JMenu(Messages.getString("View.bills")); //$NON-NLS-1$
 		menuBar.add(mnRechnung);
 
-		JDesktopPane desktopPane = new JDesktopPane();
+		desktopPane = new JDesktopPane();
 		desktopPane.setBackground(Color.LIGHT_GRAY);
 		this.getContentPane().add(desktopPane, BorderLayout.CENTER);
 
@@ -125,27 +123,6 @@ public class View extends JFrame implements Observer {
 			e2.printStackTrace();
 		}
 		orders.setVisible(true);
-
-		JInternalFrame customers = new JInternalFrame(Messages.getString("View.customers"));
-		customers.setFrameIcon(new ImageIcon(View.class.getResource("/images/customers-icon.png"))); //$NON-NLS-1$
-		customers.setResizable(true);
-		customers.setIconifiable(true);
-		customers.setMaximizable(true);
-		customers.setBounds(20, 116, 764, 208);
-		desktopPane.add(customers);
-		try {
-			customers.setMaximum(true);
-		} catch (PropertyVetoException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		customers.setVisible(true);
-		//System.out.println(DAOFactory.getDAOFactory(DAOFactory.MYSQL).getCustomerDAO().selectAllCustomers().toString());
-		customerTable = new ExtJTable("customerTable", customerTableModel(DAOFactory.getDAOFactory(DAOFactory.MYSQL).getCustomerDAO().selectAllCustomers()));
-		customerTable.setFont(new Font("Arial", Font.PLAIN, 10));
-		customerTable.setFillsViewportHeight(true);
-		customerTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS); // this is obvius part
-		customers.getContentPane().add(new JScrollPane(customerTable), BorderLayout.CENTER);
 
 		JInternalFrame bills = new JInternalFrame(Messages.getString("View.bills"));
 		bills.setFrameIcon(new ImageIcon(View.class.getResource("/images/bill.png"))); //$NON-NLS-1$
@@ -193,30 +170,25 @@ public class View extends JFrame implements Observer {
 	public void addAL(ActionListener controller) {
 		System.out.println(Messages.getString("View.vac")); //$NON-NLS-1$
 
-		menuItems.forEach(item -> {
+		menuItems.get("File").forEach(item -> {
+			System.out.println(item.getName());
+			item.addActionListener(controller);
+		});
+
+		menuItems.get("Customers").forEach(item -> {
+			System.out.println(item.getName());
 			item.addActionListener(controller);
 		});
 	} // addController()
 
-	public void addTML(TableModelListener controller)
+	public void showCustomers()
 	{
-		customerTable.getModel().addTableModelListener(controller);
+		desktopPane.add(new Customers());
 	}
 
-	private DefaultTableModel customerTableModel(ArrayList<Customer> customers)
+	public void addTML(TableModelListener controller)
 	{
-		DefaultTableModel model = new DefaultTableModel();
-
-		model.setColumnIdentifiers(this.customerTableColumnNames);
-
-		for(Customer customer : customers)
-		{
-			Object[] rowData = {customer.getId(), customer.getName(), customer.getFirstname(), customer.getUsername(), customer.getPassword(), customer.getEmail(), customer.getStreet(), customer.getHousenumber(), customer.getZip(), customer.getCity(), customer.getPhone(), customer.getMobile()};
-
-			model.addRow(rowData);
-		}
-
-		return model;
+		//customerTable.getModel().addTableModelListener(controller);
 	}
 
 	// to initialise TextField
