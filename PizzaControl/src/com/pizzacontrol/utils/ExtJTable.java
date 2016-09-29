@@ -3,10 +3,12 @@
  */
 package com.pizzacontrol.utils;
 
+import java.awt.Component;
 import java.util.Vector;
 
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
@@ -107,5 +109,22 @@ public class ExtJTable extends JTable {
 
 	public void setTableID(String tableID) {
 		TableID = tableID;
+	}
+
+	public void resizeColumnWidth() {
+		final TableColumnModel columnModel = getColumnModel();
+		for (int column = 0; column < getColumnCount(); column++) {
+			int width = 25; // Min width
+			for (int row = 0; row < getRowCount(); row++) {
+				TableCellRenderer renderer = getCellRenderer(row, column);
+				Component comp = prepareRenderer(renderer, row, column);
+				width = Math.max(comp.getPreferredSize().width + 1, width);
+			}
+
+			if (width > 300)
+				width = 300;
+
+			columnModel.getColumn(column).setPreferredWidth(width);
+		}
 	}
 }

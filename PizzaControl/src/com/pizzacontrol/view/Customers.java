@@ -26,7 +26,7 @@ public class Customers extends JInternalFrame {
 	 */
 	private static final long serialVersionUID = -3852790315908974890L;
 	private ExtJTable customerTable;
-	private String[] customerTableColumnNames = { "ID", "Name", "Vorname", "Benutzername", "Passwort", "email",
+	private String[] customerTableColumnNames = { "ID", "Name", "Vorname", "email",
 			"Straﬂe", "Hausnummer", "Postleitzahl", "Ort", "Telefon", "Mobil" };
 
 	public Customers() {
@@ -43,6 +43,7 @@ public class Customers extends JInternalFrame {
 		customerTable.setFont(new Font("Arial", Font.PLAIN, 10));
 		customerTable.setFillsViewportHeight(true);
 		customerTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS); // this is obvious part
+		customerTable.setDefaultEditor(Object.class, null);
 		getContentPane().add(new JScrollPane(customerTable), BorderLayout.CENTER);
 
 		setVisible(true);
@@ -54,8 +55,7 @@ public class Customers extends JInternalFrame {
 		model.setColumnIdentifiers(this.customerTableColumnNames);
 
 		for (Customer customer : customers) {
-			Object[] rowData = { customer.getId(), customer.getName(), customer.getFirstname(), customer.getUsername(),
-					customer.getPassword(), customer.getEmail(), customer.getStreet(), customer.getHousenumber(),
+			Object[] rowData = { customer.getId(), customer.getName(), customer.getFirstname(), customer.getEmail(), customer.getStreet(), customer.getHousenumber(),
 					customer.getZip(), customer.getCity(), customer.getPhone(), customer.getMobile() };
 
 			model.addRow(rowData);

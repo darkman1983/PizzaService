@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyVetoException;
@@ -19,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionListener;
 
 //import com.pizzacontrol.model.Customer;
@@ -52,6 +54,7 @@ public class BaseView extends JFrame implements Observer {
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage(BaseView.class.getResource("/images/Pizza-icon.png"))); //$NON-NLS-1$
 		this.setTitle(Messages.getString("BaseView.ps")); //$NON-NLS-1$
 		this.setBounds(100, 100, 800, 600);
+		this.setMinimumSize(new Dimension(this.getBounds().width, this.getBounds().height));
 		// this.setExtendedState(this.getExtendedState() |
 		// JFrame.MAXIMIZED_BOTH);
 
@@ -90,7 +93,6 @@ public class BaseView extends JFrame implements Observer {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.println("Test: " + arg.toString());
 		HashMap<?, ?> objMap = (HashMap<?, ?>) arg;
 		if (objMap.containsKey("allCustomers")) {
 			customers.updateCustomerTableModel((ArrayList<com.pizzacontrol.model.Customer>) objMap.get("allCustomers"));
@@ -107,6 +109,11 @@ public class BaseView extends JFrame implements Observer {
 		customersMenu.addActionListener(controller);
 	} // addController()
 
+	public void addMouseListener(MouseListener controller) {
+		System.out.println("Mouse Listener added...");
+		customers.getCustomerTable().addMouseListener(controller);
+	}
+
 	public void showCustomers(ListSelectionListener controller)
 	{
 		this.customers = new com.pizzacontrol.view.Customers();
@@ -121,6 +128,10 @@ public class BaseView extends JFrame implements Observer {
 		}
 	}
 
+	public boolean isCustomersVisible() {
+		return (customers == null) ? false : customers.isVisible();
+	}
+
 	public void showCustomer()
 	{
 		System.out.println("Showing Customer...");
@@ -129,7 +140,18 @@ public class BaseView extends JFrame implements Observer {
 
 		desktopPane.add(customer, 0);
 
+		Dimension desktopSize = desktopPane.getSize();
+		Dimension jInternalFrameSize = customer.getSize();
+		customer.setLocation((desktopSize.width - jInternalFrameSize.width)/2, (desktopSize.height- jInternalFrameSize.height)/2);
+
 		try {
+			customer.setSelected(true);
+		} catch (PropertyVetoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		/*try {
 			customers.setIcon(true);
 		} catch (NullPointerException e1) {
 			// TODO Auto-generated catch block
@@ -137,14 +159,7 @@ public class BaseView extends JFrame implements Observer {
 		} catch (PropertyVetoException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
-		}
-
-		try {
-			customer.setMaximum(true);
-		} catch (PropertyVetoException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		}*/
 	}
 
 	public String getSelectedCustomer() {
@@ -152,11 +167,16 @@ public class BaseView extends JFrame implements Observer {
 
 		try {
 			res = (String) customers.getCustomerTable().getModel().getValueAt(customers.getCustomerTable().getSelectedRow(), 0);
-		} catch (ArrayIndexOutOfBoundsException e) {
+		} catch (NullPointerException e) {
 
+		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 
 		return res;
+	}
+
+	public void showMessage(String message, String title, int type) {
+	    JOptionPane.showMessageDialog(null, message, title, type);
 	}
 
 	public static class CloseListener extends WindowAdapter {

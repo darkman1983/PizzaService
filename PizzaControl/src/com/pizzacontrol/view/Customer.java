@@ -44,7 +44,7 @@ public class Customer extends JInternalFrame {
 		setResizable(true);
 		setIconifiable(true);
 		setMaximizable(true);
-		setBounds(20, 116, 764, 208);
+		setBounds(5, 120, 780, 335);
 		setClosable(true);
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -56,135 +56,135 @@ public class Customer extends JInternalFrame {
 
 		JLabel LabelID = new JLabel("ID");
 		LabelID.setHorizontalAlignment(SwingConstants.RIGHT);
-		LabelID.setBounds(10, 11, 69, 14);
+		LabelID.setBounds(115, 14, 69, 14);
 		general.add(LabelID);
 
 		customerID = new JTextField();
 		customerID.setEditable(false);
-		customerID.setBounds(89, 8, 86, 20);
+		customerID.setBounds(194, 11, 86, 20);
 		general.add(customerID);
 		customerID.setColumns(10);
 
 		JLabel lblVorname = new JLabel("Vorname");
 		lblVorname.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblVorname.setBounds(10, 36, 69, 14);
+		lblVorname.setBounds(115, 39, 69, 14);
 		general.add(lblVorname);
 
 		customerFirstname = new JTextField();
-		customerFirstname.setBounds(89, 33, 86, 20);
+		customerFirstname.setBounds(194, 36, 86, 20);
 		general.add(customerFirstname);
 		customerFirstname.setColumns(10);
 
 		JLabel lblNachname = new JLabel("Nachname");
-		lblNachname.setBounds(185, 36, 50, 14);
+		lblNachname.setBounds(336, 39, 50, 14);
 		general.add(lblNachname);
 
 		customerName = new JTextField();
-		customerName.setBounds(245, 33, 86, 20);
+		customerName.setBounds(396, 36, 86, 20);
 		general.add(customerName);
 		customerName.setColumns(10);
 
 		JSeparator separator = new JSeparator();
-		separator.setBounds(0, 117, 675, 2);
+		separator.setBounds(0, 117, 780, 2);
 		general.add(separator);
 
 		JLabel lblRechnungsAdresse = new JLabel("Rechnungs Adresse");
-		lblRechnungsAdresse.setBounds(10, 171, 95, 14);
+		lblRechnungsAdresse.setBounds(29, 172, 95, 14);
 		general.add(lblRechnungsAdresse);
 
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(0, 185, 675, 2);
+		separator_1.setBounds(0, 185, 780, 2);
 		general.add(separator_1);
 
 		JLabel lblStrasse = new JLabel("Strasse");
 		lblStrasse.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblStrasse.setBounds(10, 199, 54, 14);
+		lblStrasse.setBounds(130, 202, 54, 14);
 		general.add(lblStrasse);
 
 		customerStreet = new JTextField();
-		customerStreet.setBounds(74, 196, 120, 20);
+		customerStreet.setBounds(194, 199, 120, 20);
 		general.add(customerStreet);
 		customerStreet.setColumns(10);
 
 		JLabel lblHausnummer = new JLabel("Hausnummer");
 		lblHausnummer.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblHausnummer.setBounds(204, 199, 62, 14);
+		lblHausnummer.setBounds(324, 202, 62, 14);
 		general.add(lblHausnummer);
 
 		customerHousenumber = new JTextField();
-		customerHousenumber.setBounds(276, 196, 40, 20);
+		customerHousenumber.setBounds(396, 199, 40, 20);
 		general.add(customerHousenumber);
 		customerHousenumber.setColumns(10);
 
 		JLabel lblPostleitzahl = new JLabel("Postleitzahl");
 		lblPostleitzahl.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblPostleitzahl.setBounds(10, 224, 54, 14);
+		lblPostleitzahl.setBounds(130, 227, 54, 14);
 		general.add(lblPostleitzahl);
 
 		customerZip = new JTextField();
-		customerZip.setBounds(74, 221, 60, 20);
+		customerZip.setBounds(194, 224, 60, 20);
 		general.add(customerZip);
 		customerZip.setColumns(10);
 
 		JLabel lblOrt = new JLabel("Ort");
 		lblOrt.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblOrt.setBounds(204, 224, 62, 14);
+		lblOrt.setBounds(324, 227, 62, 14);
 		general.add(lblOrt);
 
 		customerCity = new JTextField();
-		customerCity.setBounds(276, 221, 100, 20);
+		customerCity.setBounds(396, 224, 100, 20);
 		general.add(customerCity);
 		customerCity.setColumns(10);
 
 		JLabel lblTelefon = new JLabel("Telefon");
 		lblTelefon.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblTelefon.setBounds(18, 61, 61, 14);
+		lblTelefon.setBounds(123, 64, 61, 14);
 		general.add(lblTelefon);
 
 		customerPhone = new JTextField();
-		customerPhone.setBounds(89, 58, 86, 20);
+		customerPhone.setBounds(194, 61, 86, 20);
 		general.add(customerPhone);
 		customerPhone.setColumns(10);
 
 		JLabel lblMobil = new JLabel("Mobil");
 		lblMobil.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblMobil.setBounds(185, 61, 50, 14);
+		lblMobil.setBounds(336, 64, 50, 14);
 		general.add(lblMobil);
 
 		customerMobile = new JTextField();
-		customerMobile.setBounds(245, 58, 86, 20);
+		customerMobile.setBounds(396, 61, 86, 20);
 		general.add(customerMobile);
 		customerMobile.setColumns(10);
 
 		JLabel lblEmail = new JLabel("Email");
 		lblEmail.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblEmail.setBounds(341, 61, 24, 14);
+		lblEmail.setBounds(505, 64, 24, 14);
 		general.add(lblEmail);
 
 		customerEmail = new JTextField();
-		customerEmail.setBounds(375, 58, 86, 20);
+		customerEmail.setBounds(539, 61, 86, 20);
 		general.add(customerEmail);
 		customerEmail.setColumns(10);
 
 		JLabel lblLoginDaten = new JLabel("Login Daten");
-		lblLoginDaten.setBounds(10, 103, 95, 14);
+		lblLoginDaten.setBounds(29, 104, 95, 14);
 		general.add(lblLoginDaten);
 
 		JLabel lblBenutzername = new JLabel("Benutzername");
-		lblBenutzername.setBounds(10, 130, 69, 14);
+		lblBenutzername.setBounds(115, 133, 69, 14);
 		general.add(lblBenutzername);
 
 		customerUsername = new JTextField();
-		customerUsername.setBounds(89, 127, 105, 20);
+		customerUsername.setBounds(194, 130, 105, 20);
 		general.add(customerUsername);
 		customerUsername.setColumns(10);
 
 		JLabel lblPasswort = new JLabel("Passwort");
-		lblPasswort.setBounds(220, 130, 46, 14);
+		lblPasswort.setBounds(340, 133, 46, 14);
 		general.add(lblPasswort);
 
 		customerPassword = new JTextField();
-		customerPassword.setBounds(276, 127, 100, 20);
+		customerPassword.setBounds(396, 130, 100, 20);
 		general.add(customerPassword);
 		customerPassword.setColumns(10);
 

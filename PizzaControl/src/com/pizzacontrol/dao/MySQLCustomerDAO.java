@@ -104,8 +104,6 @@ public MySQLCustomerDAO (){
 					String email = rs.getString(11);
 					String city = rs.getString(12);
 
-					System.out.println(firstname);
-
 					customer = new Customer(uid, name, firstname, username, password, street, housenumber, zip, city, phone, mobile, email);
 				}
 				stmt.close();
@@ -154,8 +152,6 @@ public MySQLCustomerDAO (){
 					String mobile = rs.getString(10);
 					String email = rs.getString(11);
 					String city = rs.getString(12);
-
-					System.out.println(firstname);
 
 					customerList.add(new Customer(id, name, firstname, username, password, street, housenumber, zip, city, phone, mobile, email));
 				}

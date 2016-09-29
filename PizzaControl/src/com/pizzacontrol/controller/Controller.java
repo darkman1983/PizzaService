@@ -1,9 +1,13 @@
 package com.pizzacontrol.controller;
 
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.DefaultListSelectionModel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -23,7 +27,7 @@ import com.pizzacontrol.view.BaseView;
 
 //Controller is a Listener
 
-public class Controller implements ActionListener, ListSelectionListener {
+public class Controller implements ActionListener, ListSelectionListener, MouseListener {
 
 	// Joe: Controller has BaseModel and BaseView hardwired in
 	BaseModel model;
@@ -47,15 +51,18 @@ public class Controller implements ActionListener, ListSelectionListener {
 			break;
 		case "Alle Kunden anzeigen":
 			view.showCustomers(this);
+			view.addMouseListener(this);
 			model.updateAllCustomers();
 			break;
 		case "Kunde anzeigen":
-			view.showCustomer();
-			model.updateCustomerViewData(view.getSelectedCustomer());
+			if(view.isCustomersVisible() && view.getSelectedCustomer() != null && !view.getSelectedCustomer().isEmpty())
+				view.showCustomer();
+			if(view.getSelectedCustomer() == null || view.getSelectedCustomer().isEmpty() || !view.isCustomersVisible())
+				view.showMessage("Sie haben keinen Kunden ausgewählt!", "Information", JOptionPane.INFORMATION_MESSAGE);
+			if(view.isCustomersVisible())
+				model.updateCustomerViewData(view.getSelectedCustomer());
 			break;
 		}
-
-		System.out.println("Controller: acting on BaseModel");
 	} // actionPerformed()
 
 	// Joe I should be able to add any model/view with the correct API
@@ -76,7 +83,6 @@ public class Controller implements ActionListener, ListSelectionListener {
             return;
         }
 
-		System.out.println("Controller: Some table action was performed...");
 		DefaultListSelectionModel model = (DefaultListSelectionModel) e.getSource();
 		ListSelectionListener[] listeners = model.getListSelectionListeners();
 	    for (ListSelectionListener listener : listeners) {
@@ -87,5 +93,47 @@ public class Controller implements ActionListener, ListSelectionListener {
 	        	System.out.println("The Customer ID is: " + table.getModel().getValueAt(table.getSelectedRow(), 0));
 	        }
 	    }
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent me) {
+		ExtJTable table = (ExtJTable) me.getSource();
+        /*Point p = me.getPoint();
+        int row = table.rowAtPoint(p);*/
+
+        if (me.getClickCount() == 2) {
+            System.out.println("Mouse clicked: " + me.getClickCount());
+
+            switch(table.getTableID()) {
+            case "customerTable":
+            	view.showCustomer();
+    			model.updateCustomerViewData(view.getSelectedCustomer());
+            	break;
+            }
+        }
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+
 	}
 } // Controller
