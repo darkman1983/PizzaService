@@ -17,7 +17,7 @@ public interface CustomerDAO {
 	public boolean updateCustomer(Customer customer);
 
 	public boolean deleteCustomer(int id);
-	public Customer findCustomer(int id);
-	public ArrayList<Customer> findCustomer(String name);
+	public Customer findCustomer(String id);
+	//public ArrayList<Customer> findCustomer(String name);
 	public ArrayList<Customer> selectAllCustomers();
 }

@@ -59,4 +59,11 @@ public class BaseModel extends Observable {
 		notifyObservers(tmpMap);
 	}
 
+	public void updateCustomerViewData (String id) {
+		HashMap<String, Customer> tmpMap = new HashMap<String, Customer>();
+		tmpMap.put("customerData", DAOFactory.getDAOFactory(DAOFactory.MYSQL).getCustomerDAO().findCustomer(id));
+		setChanged();
+		notifyObservers(tmpMap);
+	}
+
 } //BaseModel

@@ -8,7 +8,7 @@ package com.pizzacontrol.model;
  *
  */
 public class Customer {
-	private int id;
+	private String id;
 	private String name;
 	private String firstname;
 	private String username;
@@ -35,7 +35,7 @@ public class Customer {
 	 * @param mobile
 	 * @param email
 	 */
-	public Customer(int id, String name, String firstname, String username, String password, String street, String housenumber, String zip, String city, String phone, String mobile, String email) {
+	public Customer(String id, String name, String firstname, String username, String password, String street, String housenumber, String zip, String city, String phone, String mobile, String email) {
 		this.id = id;
 		this.name = name;
 		this.firstname = firstname;
@@ -55,7 +55,7 @@ public class Customer {
 	 * @param name
 	 * @param firstname
 	 */
-	public Customer(int id, String name, String firstname) {
+	public Customer(String id, String name, String firstname) {
 		this.id = id;
 		this.name = name;
 		this.firstname = firstname;
@@ -63,13 +63,13 @@ public class Customer {
 	/**
 	 * @return the id
 	 */
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	/**

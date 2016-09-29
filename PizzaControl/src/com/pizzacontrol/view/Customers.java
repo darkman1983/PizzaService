@@ -5,20 +5,13 @@ package com.pizzacontrol.view;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.beans.PropertyVetoException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
-
 import javax.swing.ImageIcon;
-import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import com.pizzacontrol.dao.DAOFactory;
 import com.pizzacontrol.model.Customer;
 import com.pizzacontrol.utils.ExtJTable;
 

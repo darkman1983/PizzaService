@@ -35,7 +35,7 @@ public class RunMVC {
 		myController.addView(myView);
 
 		//tell BaseView about Controller
-		myView.addAL(myController);
+		myView.addActionListener(myController);
 		//and BaseModel,
 		//this was only needed when the view inits the model
 		//myView.addModel(myModel);

@@ -49,6 +49,10 @@ public class Controller implements ActionListener, ListSelectionListener {
 			view.showCustomers(this);
 			model.updateAllCustomers();
 			break;
+		case "Kunde anzeigen":
+			view.showCustomer();
+			model.updateCustomerViewData(view.getSelectedCustomer());
+			break;
 		}
 
 		System.out.println("Controller: acting on BaseModel");

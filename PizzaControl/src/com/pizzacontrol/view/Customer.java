@@ -6,11 +6,14 @@ package com.pizzacontrol.view;
 import javax.swing.JInternalFrame;
 import javax.swing.JTabbedPane;
 import java.awt.BorderLayout;
+import java.beans.PropertyVetoException;
+
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+import javax.swing.ImageIcon;
 
 /**
  * @author Der_B
@@ -36,6 +39,13 @@ public class Customer extends JInternalFrame {
 
 	public Customer() {
 		super("Kunde");
+
+		setFrameIcon(new ImageIcon(BaseView.class.getResource("/images/customers-icon.png"))); //$NON-NLS-1$
+		setResizable(true);
+		setIconifiable(true);
+		setMaximizable(true);
+		setBounds(20, 116, 764, 208);
+		setClosable(true);
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);
@@ -180,5 +190,24 @@ public class Customer extends JInternalFrame {
 
 		JPanel deliveryAdresses = new JPanel();
 		tabbedPane.addTab("Lieferadressen", null, deliveryAdresses, null);
+
+		setVisible(true);
+	}
+
+	public void updateCustomerData(com.pizzacontrol.model.Customer customer) {
+		if(customer != null) {
+			customerID.setText(customer.getId());
+			customerFirstname.setText(customer.getFirstname());
+			customerName.setText(customer.getName());
+			customerStreet.setText(customer.getStreet());
+			customerHousenumber.setText(customer.getHousenumber());
+			customerZip.setText(customer.getZip());
+			customerCity.setText(customer.getCity());
+			customerPhone.setText(customer.getPhone());
+			customerMobile.setText(customer.getMobile());
+			customerEmail.setText(customer.getEmail());
+			customerUsername.setText(customer.getUsername());
+			customerPassword.setText(customer.getPassword());
+		}
 	}
 }

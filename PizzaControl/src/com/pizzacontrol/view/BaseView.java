@@ -1,10 +1,9 @@
 package com.pizzacontrol.view;
 
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JSeparator;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -13,22 +12,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
-import java.awt.Toolkit;
-import java.awt.BorderLayout;
-import javax.swing.ImageIcon;
 
 import javax.swing.JDesktopPane;
-import javax.swing.JInternalFrame;
-import java.awt.Color;
-import java.awt.Dimension;
-
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-
-import com.pizzacontrol.model.Customer;
-import com.pizzacontrol.utils.ExtJTable;
-
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelListener;
+
+//import com.pizzacontrol.model.Customer;
 
 public class BaseView extends JFrame implements Observer {
 
@@ -39,6 +32,9 @@ public class BaseView extends JFrame implements Observer {
 	private HashMap<String, ArrayList<JMenuItem>> menuItems;
 	private JDesktopPane desktopPane;
 	private Customers customers;
+	private Customer customer;
+	private MainMenu mainMenu;
+	private CustomersMenu customersMenu;
 
 	/**
 	 * Create the application.
@@ -62,44 +58,11 @@ public class BaseView extends JFrame implements Observer {
 		JMenuBar menuBar = new JMenuBar();
 		this.setJMenuBar(menuBar);
 
-		JMenu mainMenu = new JMenu(Messages.getString("BaseView.file")); //$NON-NLS-1$
+		mainMenu = new MainMenu();
 		menuBar.add(mainMenu);
 
-		if(menuItems.get("File") == null) {
-			menuItems.put("File", new ArrayList<JMenuItem>());
-		}
-
-		menuItems.get("File").add(new JMenuItem(Messages.getString("BaseView.new"))); //$NON-NLS-1$
-		mainMenu.add(menuItems.get("File").get(menuItems.get("File").size() - 1));
-
-		menuItems.get("File").add(new JMenuItem(Messages.getString("BaseView.open"))); //$NON-NLS-1$
-		mainMenu.add(menuItems.get("File").get(menuItems.get("File").size() - 1));
-
-		JSeparator separator = new JSeparator();
-		mainMenu.add(separator);
-
-		menuItems.get("File").add(new JMenuItem(Messages.getString("BaseView.save"))); //$NON-NLS-1$
-		mainMenu.add(menuItems.get("File").get(menuItems.get("File").size() - 1));
-
-		menuItems.get("File").add(new JMenuItem(Messages.getString("BaseView.close"))); //$NON-NLS-1$
-		mainMenu.add(menuItems.get("File").get(menuItems.get("File").size() - 1));
-
-		JSeparator separator_1 = new JSeparator();
-		mainMenu.add(separator_1);
-
-		menuItems.get("File").add(new JMenuItem(Messages.getString("BaseView.quit"))); //$NON-NLS-1$
-		mainMenu.add(menuItems.get("File").get(menuItems.get("File").size() - 1));
-
-		JMenu mnKunden = new JMenu(Messages.getString("BaseView.customers")); //$NON-NLS-1$
-		menuBar.add(mnKunden);
-
-		menuItems.put("Customers", new ArrayList<JMenuItem>());
-
-		menuItems.get("Customers").add(new JMenuItem("Alle Kunden anzeigen")); //$NON-NLS-1$
-		mnKunden.add(menuItems.get("Customers").get(menuItems.get("Customers").size() - 1));
-
-		menuItems.get("Customers").add(new JMenuItem("Kunde Anzeigen")); //$NON-NLS-1$
-		mnKunden.add(menuItems.get("Customers").get(menuItems.get("Customers").size() - 1));
+		customersMenu = new CustomersMenu();
+		menuBar.add(customersMenu);
 
 		JMenu mnBestellungen = new JMenu(Messages.getString("BaseView.orders")); //$NON-NLS-1$
 		menuBar.add(mnBestellungen);
@@ -124,34 +87,76 @@ public class BaseView extends JFrame implements Observer {
 		this.setVisible(true);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void update(Observable o, Object arg) {
 		System.out.println("Test: " + arg.toString());
 		HashMap<?, ?> objMap = (HashMap<?, ?>) arg;
 		if (objMap.containsKey("allCustomers")) {
-			customers.updateCustomerTableModel((ArrayList<Customer>) objMap.get("allCustomers"));
+			customers.updateCustomerTableModel((ArrayList<com.pizzacontrol.model.Customer>) objMap.get("allCustomers"));
+		}
+		if (objMap.containsKey("customerData")) {
+			customer.updateCustomerData((com.pizzacontrol.model.Customer) objMap.get("customerData"));
 		}
 	}
 
-	public void addAL(ActionListener controller) {
+	public void addActionListener(ActionListener controller) {
 		System.out.println(Messages.getString("BaseView.vac")); //$NON-NLS-1$
 
-		menuItems.get("File").forEach(item -> {
-			System.out.println(item.getName());
-			item.addActionListener(controller);
-		});
-
-		menuItems.get("Customers").forEach(item -> {
-			System.out.println(item.getName());
-			item.addActionListener(controller);
-		});
+		mainMenu.addActionListener(controller);
+		customersMenu.addActionListener(controller);
 	} // addController()
 
 	public void showCustomers(ListSelectionListener controller)
 	{
-		this.customers = new Customers();
+		this.customers = new com.pizzacontrol.view.Customers();
 		customers.getCustomerTable().getSelectionModel().addListSelectionListener(controller);
-		desktopPane.add(customers);
+		desktopPane.add(customers, 10);
+
+		try {
+			customers.setMaximum(true);
+		} catch (PropertyVetoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void showCustomer()
+	{
+		System.out.println("Showing Customer...");
+
+		customer = new com.pizzacontrol.view.Customer();
+
+		desktopPane.add(customer, 0);
+
+		try {
+			customers.setIcon(true);
+		} catch (NullPointerException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (PropertyVetoException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+
+		try {
+			customer.setMaximum(true);
+		} catch (PropertyVetoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public String getSelectedCustomer() {
+		String res = null;
+
+		try {
+			res = (String) customers.getCustomerTable().getModel().getValueAt(customers.getCustomerTable().getSelectedRow(), 0);
+		} catch (ArrayIndexOutOfBoundsException e) {
+
+		}
+
+		return res;
 	}
 
 	public static class CloseListener extends WindowAdapter {
