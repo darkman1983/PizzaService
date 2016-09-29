@@ -7,6 +7,9 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
@@ -34,22 +37,19 @@ public class Customers extends JInternalFrame {
 			"Straﬂe", "Hausnummer", "Postleitzahl", "Ort", "Telefon", "Mobil" };
 
 	public Customers() {
-		setTitle(Messages.getString("View.customers"));
-		setFrameIcon(new ImageIcon(View.class.getResource("/images/customers-icon.png"))); //$NON-NLS-1$
+		super(Messages.getString("BaseView.customers"));
+
+		setFrameIcon(new ImageIcon(BaseView.class.getResource("/images/customers-icon.png"))); //$NON-NLS-1$
 		setResizable(true);
 		setIconifiable(true);
 		setMaximizable(true);
 		setBounds(20, 116, 764, 208);
 		setClosable(true);
 
-		customerTable = new ExtJTable("customerTable",
-				customerTableModel(DAOFactory.getDAOFactory(DAOFactory.MYSQL).getCustomerDAO().selectAllCustomers()));
+		customerTable = new ExtJTable("customerTable");
 		customerTable.setFont(new Font("Arial", Font.PLAIN, 10));
 		customerTable.setFillsViewportHeight(true);
-		customerTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS); // this
-																			// is
-																			// obvius
-																			// part
+		customerTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS); // this is obvious part
 		getContentPane().add(new JScrollPane(customerTable), BorderLayout.CENTER);
 
 		setVisible(true);
@@ -69,5 +69,16 @@ public class Customers extends JInternalFrame {
 		}
 
 		return model;
+	}
+
+	/**
+	 * @return the customerTable
+	 */
+	public ExtJTable getCustomerTable() {
+		return customerTable;
+	}
+
+	public void updateCustomerTableModel(ArrayList<Customer> customers) {
+		customerTable.setModel(customerTableModel(customers));
 	}
 }

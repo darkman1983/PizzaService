@@ -31,6 +31,14 @@ public class ExtJTable extends JTable {
 	}
 
 	/**
+	 *
+	 */
+	public ExtJTable(String tableName) {
+		super();
+		this.TableID = tableName;
+	}
+
+	/**
 	 * @param numRows
 	 * @param numColumns
 	 */

@@ -3,7 +3,10 @@ package com.pizzacontrol.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
@@ -11,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.pizzacontrol.model.BaseModel;
 import com.pizzacontrol.utils.ExtJTable;
-import com.pizzacontrol.view.View;
+import com.pizzacontrol.view.BaseView;
 
 //Controller.java
 //(C) Joseph Mack 2011, jmack (at) wm7d (dot) net, released under GPL v3 (or any later version)
@@ -20,11 +23,11 @@ import com.pizzacontrol.view.View;
 
 //Controller is a Listener
 
-public class Controller implements ActionListener, TableModelListener {
+public class Controller implements ActionListener, ListSelectionListener {
 
-	// Joe: Controller has BaseModel and View hardwired in
+	// Joe: Controller has BaseModel and BaseView hardwired in
 	BaseModel model;
-	View view;
+	BaseView view;
 
 	public Controller() {
 		System.out.println("Controller()");
@@ -43,7 +46,8 @@ public class Controller implements ActionListener, TableModelListener {
 			System.exit(0);
 			break;
 		case "Alle Kunden anzeigen":
-			view.showCustomers();
+			view.showCustomers(this);
+			model.updateAllCustomers();
 			break;
 		}
 
@@ -51,34 +55,33 @@ public class Controller implements ActionListener, TableModelListener {
 	} // actionPerformed()
 
 	// Joe I should be able to add any model/view with the correct API
-	// but here I can only add BaseModel/View
+	// but here I can only add BaseModel/BaseView
 	public void addModel(BaseModel m) {
 		System.out.println("Controller: adding model");
 		this.model = m;
 	} // addModel()
 
-	public void addView(View v) {
+	public void addView(BaseView v) {
 		System.out.println("Controller: adding view");
 		this.view = v;
 	} // addView()
 
-	public void initModel(int x) {
-		model.setValue(x);
-	} // initModel()
-
 	@Override
-	public void tableChanged(TableModelEvent e) {
-		System.out.println("Controller: Some table action was performed...");
+	public void valueChanged(ListSelectionEvent e) {
+		if (e.getValueIsAdjusting()) {
+            return;
+        }
 
-		AbstractTableModel model = (AbstractTableModel) e.getSource();
-	    TableModelListener[] listeners = model.getTableModelListeners();
-	    for (TableModelListener listener : listeners) {
+		System.out.println("Controller: Some table action was performed...");
+		DefaultListSelectionModel model = (DefaultListSelectionModel) e.getSource();
+		ListSelectionListener[] listeners = model.getListSelectionListeners();
+	    for (ListSelectionListener listener : listeners) {
 	        if (listener instanceof ExtJTable) {
-	        	System.out.println("The table ID is: " + ((ExtJTable)listener).getTableID());
-	        	/*System.out.println(((ExtJTable)listener).toString());
-	            System.out.println(((ExtJTable)listener).getName());*/
+	        	ExtJTable table = ((ExtJTable)listener);
+	        	System.out.println("The table ID is: " + table.getTableID());
+	        	System.out.println("The selected row is: " + table.getSelectedRow());
+	        	System.out.println("The Customer ID is: " + table.getModel().getValueAt(table.getSelectedRow(), 0));
 	        }
 	    }
 	}
-
 } // Controller

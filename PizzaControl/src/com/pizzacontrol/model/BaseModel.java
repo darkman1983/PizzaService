@@ -1,5 +1,9 @@
 package com.pizzacontrol.model;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Observable;
+
+import com.pizzacontrol.dao.DAOFactory;
 
 //BaseModel.java
 //(C) Joseph Mack 2011, jmack (at) wm7d (dot) net, released under GPL v3 (or any later version)
@@ -8,7 +12,7 @@ import java.util.Observable;
 
 //BaseModel holds an int counter (that's all it is).
 //BaseModel is an Observable
-//BaseModel doesn't know about View or Controller
+//BaseModel doesn't know about BaseView or Controller
 
 public class BaseModel extends Observable {
 
@@ -48,37 +52,11 @@ public class BaseModel extends Observable {
 
 	} //BaseModel()
 
-	//uncomment this if View is using BaseModel Pull to get the counter
-	//not needed if getting counter from notifyObservers()
-	//public int getValue(){return counter;}
-
-	//notifyObservers()
-	//model sends notification to view because of RunMVC: myModel.addObserver(myView)
-	//myView then runs update()
-	//
-	//model Push - send counter as part of the message
-	public void setValue(int value) {
-
-		this.counter = value;
-		System.out.println("BaseModel init: counter = " + counter);
+	public void updateAllCustomers() {
+		HashMap<String, ArrayList<?>> tmpMap = new HashMap<String, ArrayList<?>>();
+		tmpMap.put("allCustomers", DAOFactory.getDAOFactory(DAOFactory.MYSQL).getCustomerDAO().selectAllCustomers());
 		setChanged();
-		//model Push - send counter as part of the message
-		notifyObservers(counter);
-		//if using BaseModel Pull, then can use notifyObservers()
-		//notifyObservers()
-
-	} //setValue()
-
-	public void incrementValue() {
-
-		++counter;
-		System.out.println("BaseModel     : counter = " + counter);
-		setChanged();
-		//model Push - send counter as part of the message
-		notifyObservers(counter);
-		//if using BaseModel Pull, then can use notifyObservers()
-		//notifyObservers()
-
-	} //incrementValue()
+		notifyObservers(tmpMap);
+	}
 
 } //BaseModel

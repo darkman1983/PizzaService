@@ -4,7 +4,7 @@ package com.pizzacontrol.main;
 
 import com.pizzacontrol.controller.Controller;
 import com.pizzacontrol.model.BaseModel;
-import com.pizzacontrol.view.View;
+import com.pizzacontrol.view.BaseView;
 
 public class RunMVC {
 
@@ -15,11 +15,11 @@ public class RunMVC {
 
 	public RunMVC() {
 
-		//create BaseModel and View
+		//create BaseModel and BaseView
 		BaseModel myModel 	= new BaseModel();
-		View myView 	= new View();
+		BaseView myView 	= new BaseView();
 
-		//tell BaseModel about View.
+		//tell BaseModel about BaseView.
 		myModel.addObserver(myView);
 		/*
 			init model after view is instantiated and can show the status of the model
@@ -29,15 +29,13 @@ public class RunMVC {
 		//uncomment to directly initialise BaseModel
 		//myModel.setValue(start_value);
 
-		//create Controller. tell it about BaseModel and View, initialise model
+		//create Controller. tell it about BaseModel and BaseView, initialise model
 		Controller myController = new Controller();
 		myController.addModel(myModel);
 		myController.addView(myView);
-		myController.initModel(start_value);
 
-		//tell View about Controller
+		//tell BaseView about Controller
 		myView.addAL(myController);
-		myView.addTML(myController);
 		//and BaseModel,
 		//this was only needed when the view inits the model
 		//myView.addModel(myModel);
